@@ -120,6 +120,7 @@ class IssueAdd extends React.Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
     /****** Q3: Start Coding here. Create State to hold inputs******/
     this.state = {
       title: '',
@@ -154,13 +155,21 @@ class IssueAdd extends React.Component {
     const issue = { title, owner, effort: parseInt(effort, 10), due: new Date(due) };
     this.props.createIssue(issue);
     this.setState({ title: '', owner: '', effort: '', due: '' });
+    this.props.toggleForm();
+    /****** Q3: Code Ends here. ******/
+  }
+
+  handleCancel() {
+    /****** Q3: Start Coding here. Clear input fields and hide the form******/
+    this.setState({ title: '', owner: '', effort: '', due: '' });
+    this.props.toggleForm();
     /****** Q3: Code Ends here. ******/
   }
 
   render() {
     return (
       <View>
-        {/****** Q3: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit.*******/}
+        {/****** Q3: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit. Create a cancel button to hide the form.*******/}
         <TextInput
           placeholder="Title"
           value={this.state.title}
@@ -182,6 +191,7 @@ class IssueAdd extends React.Component {
           onChangeText={this.handleDueChange}
         />
         <Button title="Add Issue" onPress={this.handleSubmit} />
+        <Button title="Cancel" onPress={this.handleCancel} />
         {/****** Q3: Code Ends here. ******/}
       </View>
     );
@@ -216,8 +226,9 @@ class BlackList extends React.Component {
 export default class IssueList extends React.Component {
     constructor() {
         super();
-        this.state = { issues: [] };
+        this.state = { issues: [], showForm: false };
         this.createIssue = this.createIssue.bind(this);
+        this.toggleForm = this.toggleForm.bind(this);
     }
     
     componentDidMount() {
@@ -250,7 +261,10 @@ export default class IssueList extends React.Component {
         this.loadData();
     }
     }
-    
+
+    toggleForm() {
+      this.setState((prevState) => ({ showForm: !prevState.showForm }));
+    }
     
     render() {
     return (
@@ -260,12 +274,19 @@ export default class IssueList extends React.Component {
     {/****** Q1: Code ends here ******/}
 
     {/****** Q2: Start Coding here. ******/}
-    <IssueTable issues={this.state.issues} />
-    {/****** Q2: Code ends here ******/}
-
     {/****** Q3: Start Coding here. ******/}
-    <IssueAdd createIssue={this.createIssue} />
+    {this.state.showForm ? (
+      <IssueAdd createIssue={this.createIssue} toggleForm={this.toggleForm} />
+    ) : (
+      <>
+        <Button title="Add New Issue" onPress={this.toggleForm} />
+        <IssueTable issues={this.state.issues} />
+      </>
+    )}
+    {/****** Q2: Code ends here ******/}
     {/****** Q3: Code Ends here. ******/}
+    
+    
 
     {/****** Q4: Start Coding here. ******/}
     {/****** Q4: Code Ends here. ******/}
