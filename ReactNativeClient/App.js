@@ -63,47 +63,58 @@ class IssueFilter extends React.Component {
 
 const styles = StyleSheet.create({
     container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-  header: { height: 50, backgroundColor: '#537791' },
-  text: { textAlign: 'center' },
-  dataWrapper: { marginTop: -1 },
-  row: { height: 40, backgroundColor: '#E7E6E1' }
-  });
+    card: { 
+        backgroundColor: '#f9f9f9', 
+        padding: 20, 
+        marginVertical: 10, 
+        borderRadius: 10, 
+        shadowColor: '#000', 
+        shadowOffset: { width: 0, height: 2 }, 
+        shadowOpacity: 0.1, 
+        shadowRadius: 5, 
+        elevation: 3 
+    },
+    cardTitle: { 
+        fontSize: 18, 
+        fontWeight: 'bold', 
+        marginBottom: 10 
+    },
+    header: { height: 50, backgroundColor: '#537791' },
+    text: { textAlign: 'center' },
+    dataWrapper: { marginTop: -1 },
+    row: { height: 40, backgroundColor: '#E7E6E1' }
+});
 
 const width= [40,80,80,80,80,80,200];
 
 function IssueRow(props) {
     const issue = props.issue;
     {/****** Q2: Coding Starts here. Create a row of data in a variable******/}
-    {/****** Q2: Coding Ends here.******/}
     return (
-      <>
-      {/****** Q2: Start Coding here. Add Logic to render a row  ******/}
-      
-      {/****** Q2: Coding Ends here. ******/}  
-      </>
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>{issue.title}</Text>
+        <Text>Status: {issue.status}</Text>
+        <Text>Owner: {issue.owner}</Text>
+        <Text>Created: {issue.created.toDateString()}</Text>
+        <Text>Effort: {issue.effort}</Text>
+        <Text>Due: {issue.due ? issue.due.toDateString() : 'N/A'}</Text>
+      </View>
     );
-  }
+    {/****** Q2: Coding Ends here.******/}
+}
   
   
-  function IssueTable(props) {
+function IssueTable(props) {
     const issueRows = props.issues.map(issue =>
       <IssueRow key={issue.id} issue={issue} />
     );
 
-    {/****** Q2: Start Coding here. Add Logic to initalize table header  ******/}
-
-    {/****** Q2: Coding Ends here. ******/}
-    
-    
     return (
-    <View style={styles.container}>
-    {/****** Q2: Start Coding here to render the table header/rows.**********/}
-    
-    {/****** Q2: Coding Ends here. ******/}
-    </View>
+      <ScrollView style={styles.container}>
+        {issueRows}
+      </ScrollView>
     );
-  }
-
+}
   
   class IssueAdd extends React.Component {
     constructor() {
@@ -203,6 +214,7 @@ export default class IssueList extends React.Component {
     {/****** Q1: Code ends here ******/}
 
     {/****** Q2: Start Coding here. ******/}
+    <IssueTable issues={this.state.issues} />
     {/****** Q2: Code ends here ******/}
 
     {/****** Q3: Start Coding here. ******/}
