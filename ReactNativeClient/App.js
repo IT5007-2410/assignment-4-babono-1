@@ -116,31 +116,77 @@ function IssueTable(props) {
     );
 }
   
-  class IssueAdd extends React.Component {
-    constructor() {
-      super();
-      this.handleSubmit = this.handleSubmit.bind(this);
-      /****** Q3: Start Coding here. Create State to hold inputs******/
-      /****** Q3: Code Ends here. ******/
-    }
-  
-    /****** Q3: Start Coding here. Add functions to hold/set state input based on changes in TextInput******/
+class IssueAdd extends React.Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+    /****** Q3: Start Coding here. Create State to hold inputs******/
+    this.state = {
+      title: '',
+      owner: '',
+      effort: '',
+      due: '',
+    };
     /****** Q3: Code Ends here. ******/
-    
-    handleSubmit() {
-      /****** Q3: Start Coding here. Create an issue from state variables and call createIssue. Also, clear input field in front-end******/
-      /****** Q3: Code Ends here. ******/
-    }
-  
-    render() {
-      return (
-          <View>
-          {/****** Q3: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit.*******/}
-          {/****** Q3: Code Ends here. ******/}
-          </View>
-      );
-    }
   }
+
+  /****** Q3: Start Coding here. Add functions to hold/set state input based on changes in TextInput******/
+  handleTitleChange = (text) => {
+    this.setState({ title: text });
+  };
+
+  handleOwnerChange = (text) => {
+    this.setState({ owner: text });
+  };
+
+  handleEffortChange = (text) => {
+    this.setState({ effort: text });
+  };
+
+  handleDueChange = (text) => {
+    this.setState({ due: text });
+  };
+  /****** Q3: Code Ends here. ******/
+  
+  handleSubmit() {
+    /****** Q3: Start Coding here. Create an issue from state variables and call createIssue. Also, clear input field in front-end******/
+    const { title, owner, effort, due } = this.state;
+    const issue = { title, owner, effort: parseInt(effort, 10), due: new Date(due) };
+    this.props.createIssue(issue);
+    this.setState({ title: '', owner: '', effort: '', due: '' });
+    /****** Q3: Code Ends here. ******/
+  }
+
+  render() {
+    return (
+      <View>
+        {/****** Q3: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit.*******/}
+        <TextInput
+          placeholder="Title"
+          value={this.state.title}
+          onChangeText={this.handleTitleChange}
+        />
+        <TextInput
+          placeholder="Owner"
+          value={this.state.owner}
+          onChangeText={this.handleOwnerChange}
+        />
+        <TextInput
+          placeholder="Effort"
+          value={this.state.effort}
+          onChangeText={this.handleEffortChange}
+        />
+        <TextInput
+          placeholder="Due Date (YYYY-MM-DD)"
+          value={this.state.due}
+          onChangeText={this.handleDueChange}
+        />
+        <Button title="Add Issue" onPress={this.handleSubmit} />
+        {/****** Q3: Code Ends here. ******/}
+      </View>
+    );
+  }
+}
 
 class BlackList extends React.Component {
     constructor()
@@ -218,6 +264,7 @@ export default class IssueList extends React.Component {
     {/****** Q2: Code ends here ******/}
 
     {/****** Q3: Start Coding here. ******/}
+    <IssueAdd createIssue={this.createIssue} />
     {/****** Q3: Code Ends here. ******/}
 
     {/****** Q4: Start Coding here. ******/}
