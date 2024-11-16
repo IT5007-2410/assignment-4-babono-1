@@ -199,24 +199,52 @@ class IssueAdd extends React.Component {
 }
 
 class BlackList extends React.Component {
-    constructor()
-    {   super();
+    constructor() {
+        super();
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
         /****** Q4: Start Coding here. Create State to hold inputs******/
+        this.state = {
+          name: '',
+        };
         /****** Q4: Code Ends here. ******/
     }
     /****** Q4: Start Coding here. Add functions to hold/set state input based on changes in TextInput******/
+    handleNameChange = (text) => {
+      this.setState({ name: text });
+    };
     /****** Q4: Code Ends here. ******/
 
     async handleSubmit() {
     /****** Q4: Start Coding here. Create an issue from state variables and issue a query. Also, clear input field in front-end******/
+      const { name } = this.state;
+      const query = `mutation addToBlacklist($nameInput: String!) {
+        addToBlacklist(nameInput: $nameInput)
+      }`;
+      await graphQLFetch(query, { nameInput: name });
+      this.setState({ name: '' });
+      this.props.toggleBlacklistForm();
     /****** Q4: Code Ends here. ******/
+    }
+
+    handleCancel() {
+      /****** Q4: Start Coding here. Clear input fields and hide the form******/
+      this.setState({ name: '' });
+      this.props.toggleBlacklistForm();
+      /****** Q4: Code Ends here. ******/
     }
 
     render() {
     return (
         <View>
-        {/****** Q4: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit.*******/}
+        {/****** Q4: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit. Create a cancel button to hide the form.*******/}
+        <TextInput
+          placeholder="Name"
+          value={this.state.name}
+          onChangeText={this.handleNameChange}
+        />
+        <Button title="Add to Blacklist" onPress={this.handleSubmit} />
+        <Button title="Cancel" onPress={this.handleCancel} />
         {/****** Q4: Code Ends here. ******/}
         </View>
     );
@@ -226,9 +254,10 @@ class BlackList extends React.Component {
 export default class IssueList extends React.Component {
     constructor() {
         super();
-        this.state = { issues: [], showForm: false };
+        this.state = { issues: [], showForm: false, showBlacklistForm: false };
         this.createIssue = this.createIssue.bind(this);
         this.toggleForm = this.toggleForm.bind(this);
+        this.toggleBlacklistForm = this.toggleBlacklistForm.bind(this);
     }
     
     componentDidMount() {
@@ -265,6 +294,10 @@ export default class IssueList extends React.Component {
     toggleForm() {
       this.setState((prevState) => ({ showForm: !prevState.showForm }));
     }
+
+    toggleBlacklistForm() {
+      this.setState((prevState) => ({ showBlacklistForm: !prevState.showBlacklistForm }));
+    }
     
     render() {
     return (
@@ -286,9 +319,12 @@ export default class IssueList extends React.Component {
     {/****** Q2: Code ends here ******/}
     {/****** Q3: Code Ends here. ******/}
     
-    
-
     {/****** Q4: Start Coding here. ******/}
+    {this.state.showBlacklistForm ? (
+      <BlackList toggleBlacklistForm={this.toggleBlacklistForm} />
+    ) : (
+      <Button title="Blacklist User" onPress={this.toggleBlacklistForm} />
+    )}
     {/****** Q4: Code Ends here. ******/}
     </>
       
