@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 import {
     SafeAreaView,
@@ -52,7 +51,7 @@ class IssueFilter extends React.Component {
       return (
         <>
         {/****** Q1: Start Coding here. ******/}
-        <Button title="Filter" onPress={() => {}} />
+        <Button title="Filter" onPress={() => {}} color="#d7d7d7" />
         {/****** Q1: Code ends here ******/}
         </>
       );
@@ -60,41 +59,44 @@ class IssueFilter extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+    container: { 
+      flex: 1, 
+      padding: 16,       
+      backgroundColor: '#fff' 
+    },
     card: { 
-        backgroundColor: '#f9f9f9', 
-        padding: 20, 
-        marginVertical: 10, 
-        borderRadius: 10, 
-        shadowColor: '#000', 
-        shadowOffset: { width: 0, height: 2 }, 
-        shadowOpacity: 0.1, 
-        shadowRadius: 5, 
-        elevation: 3 
+      backgroundColor: '#f9f9f9', 
+      padding: 16, 
+      marginVertical: 8, 
+      borderRadius: 10, 
+      borderColor: '#d7d7d7',
+      borderWidth: 2,
     },
     cardTitle: { 
-        fontSize: 18, 
-        fontWeight: 'bold', 
-        marginBottom: 10 
+      fontSize: 16, 
+      fontWeight: 'bold', 
+      marginBottom: 8 
     },
-    header: { height: 50, backgroundColor: '#537791' },
-    text: { textAlign: 'center' },
-    dataWrapper: { marginTop: -1 },
-    row: { height: 40, backgroundColor: '#E7E6E1' },
+    cardBody: {
+      fontSize: 13,
+      marginBottom: 8,
+      lineHeight: 13,
+    },  
     buttonContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 16,
+        padding: 2,
+        justifyContent: 'space-around',
     },
-    button: {
-        flex: 1,
-        marginHorizontal: 5,
+    form: {
+      padding: 8,
+      borderColor: '#d7d7d7',
+      borderWidth: 2,
+      marginBottom: 16,
     },
-    blackButton: {
-        flex: 1,
-        marginHorizontal: 5,
-        backgroundColor: 'black',
-        color: 'white',
+    fixToText: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 4,
     },
 });
 
@@ -106,11 +108,11 @@ function IssueRow(props) {
     return (
       <View style={styles.card}>
         <Text style={styles.cardTitle}>{issue.title}</Text>
-        <Text>Status: {issue.status}</Text>
-        <Text>Owner: {issue.owner}</Text>
-        <Text>Created: {issue.created.toDateString()}</Text>
-        <Text>Effort: {issue.effort}</Text>
-        <Text>Due: {issue.due ? issue.due.toDateString() : 'N/A'}</Text>
+        <Text style={styles.cardBody}>Status: {issue.status}</Text>
+        <Text style={styles.cardBody}>Owner: {issue.owner}</Text>
+        <Text style={styles.cardBody}>Created: {issue.created.toDateString()}</Text>
+        <Text style={styles.cardBody}>Effort: {issue.effort}</Text>
+        <Text style={styles.cardBody}>Due: {issue.due ? issue.due.toDateString() : 'N/A'}</Text>
       </View>
     );
     {/****** Q2: Coding Ends here.******/}
@@ -123,7 +125,7 @@ function IssueTable(props) {
     );
 
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView>
         {issueRows}
       </ScrollView>
     );
@@ -183,28 +185,35 @@ class IssueAdd extends React.Component {
     return (
       <View>
         {/****** Q3: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit. Create a cancel button to hide the form.*******/}
+        <Text style={styles.cardTitle}>Add Issue</Text>
         <TextInput
+          style={styles.form}
           placeholder="Title"
           value={this.state.title}
           onChangeText={this.handleTitleChange}
         />
         <TextInput
+          style={styles.form}
           placeholder="Owner"
           value={this.state.owner}
           onChangeText={this.handleOwnerChange}
         />
         <TextInput
+          style={styles.form}
           placeholder="Effort"
           value={this.state.effort}
           onChangeText={this.handleEffortChange}
         />
         <TextInput
+          style={styles.form}
           placeholder="Due Date (YYYY-MM-DD)"
           value={this.state.due}
           onChangeText={this.handleDueChange}
         />
-        <Button title="Add Issue" onPress={this.handleSubmit} />
-        <Button title="Cancel" onPress={this.handleCancel} />
+        <View style={styles.buttonContainer}>
+          <Button title="Add Issue" onPress={this.handleSubmit} color="#74BFA8" />
+          <Button title="Cancel" onPress={this.handleCancel} color="#EC765B" />
+        </View>
         {/****** Q3: Code Ends here. ******/}
       </View>
     );
@@ -251,13 +260,17 @@ class BlackList extends React.Component {
     return (
         <View>
         {/****** Q4: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit. Create a cancel button to hide the form.*******/}
-        <TextInput
-          placeholder="Name"
-          value={this.state.name}
-          onChangeText={this.handleNameChange}
-        />
-        <Button title="Add to Blacklist" onPress={this.handleSubmit} />
-        <Button title="Cancel" onPress={this.handleCancel} />
+          <Text style={styles.cardTitle}>Blacklist User</Text>
+          <TextInput
+            placeholder="Name"
+            value={this.state.name}
+            onChangeText={this.handleNameChange}
+            style={styles.form}
+          />
+          <View style={styles.buttonContainer}>
+            <Button title="Add to Blacklist" onPress={this.handleSubmit} color="black" />
+            <Button title="Cancel" onPress={this.handleCancel} color="#EC765B" />
+          </View>
         {/****** Q4: Code Ends here. ******/}
         </View>
     );
@@ -315,6 +328,8 @@ export default class IssueList extends React.Component {
     render() {
     return (
     <>    
+      <View style={styles.container}>
+        
 
     {/****** Q2: Start Coding here. ******/}
     {/****** Q3: Start Coding here. ******/}
@@ -325,21 +340,23 @@ export default class IssueList extends React.Component {
     ) : (
       <>
         {/****** Q1: Start Coding here. ******/}
-        <IssueFilter />
-        {/****** Q1: Code ends here ******/}
-        <IssueTable issues={this.state.issues} />
         {/****** Q4: Start Coding here. ******/}
         <View style={styles.buttonContainer}>
-          <Button title="Add New Issue" onPress={this.toggleForm} style={styles.button} />
-          <Button title="Blacklist User" onPress={this.toggleBlacklistForm} style={styles.blackButton} />
-        </View>        
+          <IssueFilter />
+          <Button title="Add New Issue" onPress={this.toggleForm} color="#74BFA8" />
+          <Button title="Blacklist User" onPress={this.toggleBlacklistForm} color="black" />
+        </View>    
+        
+        {/****** Q1: Code ends here ******/}
+        <IssueTable issues={this.state.issues} />
+        
+            
       </>
     )}
     {/****** Q2: Code ends here ******/}
     {/****** Q3: Code Ends here. ******/}
-    {/****** Q4: Code Ends here. ******/}
-    
-    
+    {/****** Q4: Code Ends here. ******/}    
+      </View>
     </>
       
     );
