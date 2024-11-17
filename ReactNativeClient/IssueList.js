@@ -166,6 +166,7 @@ class IssueAdd extends React.Component {
   
   handleSubmit() {
     /****** Q3: Start Coding here. Create an issue from state variables and call createIssue. Also, clear input field in front-end******/
+    /* I assume the new issue will always be new, the assigned status will need assign feature to assign someone as assignee */
     const { title, owner, effort, due } = this.state;
     const issue = { title, owner, effort: parseInt(effort, 10), due: new Date(due) };
     this.props.createIssue(issue);
